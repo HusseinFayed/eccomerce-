@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <center>
+    <head>
+<strong><h1> Recipe Table </h1></strong>
+    </center>
+</head>
+    <head>
+        <title>Recipe Table</title>
+        <meta charset="windows-1252">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <center>
+    <table id="table" border="10">
+        <tr>
+                <th>Recipe Number</th>
+                <th>User Name</th>
+                <th>Order Number</th>
+        </tr>
+            {{#each recipes}}
+             <tr>
+                <th>{{_id}}</th>
+                <th>{{user_name}}</th>
+                <th>{{order_number}}</th>
+            </tr>
+            {{/each}}
+        </table>
+</html>
