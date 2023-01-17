@@ -25,12 +25,12 @@ describe('ProductController E2E Test', () => {
     await app.init();
   });
 
-//   beforeAll(async () => {
-//     const jwtService = new JwtService()
-//     token = await jwtService.sign({
-//       name: user.username,
-//   })
-// });
+  //   beforeAll(async () => {
+  //     const jwtService = new JwtService()
+  //     token = await jwtService.sign({
+  //       name: user.username,
+  //   })
+  // });
 
 
   afterAll(async () => {
@@ -128,15 +128,19 @@ describe('ProductController E2E Test', () => {
     })
   })
 
-  // describe('Add to cart', () => {
-  //   it('create a valid cart', async () => {
-  //     await mongoose.connect('mongodb://127.0.0.1:27017/eccomerce');
-  //     mongoose.model("products", ProductSchema)
-  //     const productss = await connection.model<Product>('products').findOne({ where: { _id: cart.productId } })
-  //     return request(app.getHttpServer())
-  //       .post("/add-to-cart")
-  //       .send({ ...cart, price: productss.price, total_price: productss.price * cart.qty })
-  //       .expect(200)
-  //   })
+  describe('Add to cart', () => {
+    it('create a valid cart', async () => {
+      await mongoose.connect('mongodb://127.0.0.1:27017/eccomerce');
+      mongoose.model("products", ProductSchema)
+      const productss = await connection.model<Product>('products').findOne({ where: { _id: cart.productId } })
+      return request(app.getHttpServer())
+        .post("/add-to-cart")
+        .set({
+          authorization: `Bearer ${user.token}`
+        })
+        .send({ ...cart, price: productss.price, total_price: productss.price * cart.qty })
+        .expect(200)
+    })
   })
 
+})
