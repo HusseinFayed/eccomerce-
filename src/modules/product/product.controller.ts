@@ -47,11 +47,15 @@ export class ProductController extends ControllerFactory<Product>(Product) {
         return product
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete('delete-productByName_en/:name_en')
-    async deleteProduct(@Param('name_en') name_en: string): Promise<void> {
+    async deleteProduct(@Req() req,@Param('name_en') name_en: string): Promise<void> {
         const product = await this.productService.getProductByName_en(name_en)
         if (!product) {
             throw new HttpException('No product By That name', HttpStatus.BAD_REQUEST)
+        }
+        if( req.user.name !== product.user[0]){
+            throw new HttpException('The username from bearer token in not the same to the product user', HttpStatus.UNAUTHORIZED)
         }
         return await this.productService.deleteProduct(name_en);
     }

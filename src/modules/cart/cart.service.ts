@@ -50,7 +50,4 @@ export class CartService extends ServiceFactory<Cart>(Cart) {
         await this.connection.model<Cart>('Cart').updateOne({ _id: id }, { qty: cart.qty })
     }
 
-    public async makeOrder(req) {
-
-    }
 }

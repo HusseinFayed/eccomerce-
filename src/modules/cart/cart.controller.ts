@@ -39,12 +39,4 @@ export class CartController extends ControllerFactory<Cart>(Cart) {
         }
         return await this.cartService.editCart(id, cart)
     }
-
-    @UseGuards(JwtAuthGuard)
-    async makeOrder(@Req() req, @Res() response, @Body() order: Order) {
-        const newOrder = await this.cartService.makeOrder(req);
-        return response.status(HttpStatus.CREATED).json({
-            newOrder
-        })
-    }
 }

@@ -19,3 +19,11 @@ export const cart = {
     "user_name":""
 }
 
+// export const user = {
+//     "username":"cdscs",
+//     "password":1,
+// }
+
+export const user = {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic2VsbGVyMiIsImlhdCI6MTY3MzY5MDU5MSwiZXhwIjoxNzA1MjQ4MTkxfQ.k4Ajlglx0xkEvZSQvo-ZKUUi1nlqNeJ2Rg0yIhZjFs8"
+}

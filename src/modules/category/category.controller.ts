@@ -48,7 +48,7 @@ export class CategoryController extends ControllerFactory<Category>(Category) {
     }
 
     @Delete('delete-categoryByName_en/:name_en')
-    async deleteCategory(@Param('name_en') name_en: string): Promise<void> {
+    async deleteCategory(@Req() req,@Param('name_en') name_en: string): Promise<void> {
         const category = await this.categoryService.getCategoryByName_en(name_en)
         if (!category) {
             throw new HttpException('No category By That Name', HttpStatus.BAD_REQUEST)
