@@ -24,7 +24,24 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+E-commerce (electronic commerce) is the buying and selling of products according to its category, There are seller who can register and add his product according to its category and a buyer who can register , add deposit money in his wallet to be able to add in carts and make order 
+
+
+## Project has two kinds of users
+1) Serller: Can add, edit, remove product and category
+2) Buyer: Can can get all products with its categories to get paid
+
+## Project Feature 
+1) Seller and Buyers can register, log in and log out.
+2) Seller can add new products and categories and edit or remove their products
+3) Buyer can put products in cart and view their carts before order and edit cart if it is required
+4) Buyer can add to his deposit to be able to make order
+
+## Feature To Be Added
+1) Make Order: Make order by buyer cart and subtracting carts quantity from product stock quantity
+2) Make a transaction from buyer deposit to seller deposit 
+3) Print Recipe by buyer order
+4) Seller can get all his orders
 
 ## Installation
 
