@@ -24,7 +24,6 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 E-commerce (electronic commerce) is the buying and selling of products according to its category, There are seller who can register and add his product according to its category and a buyer who can register , add deposit money in his wallet to be able to add in carts and make order 
 
 
