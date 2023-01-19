@@ -34,7 +34,11 @@ export class CategoryController extends ControllerFactory<Category>(Category) {
     @Get('get-categoryById/:id')
     @HttpCode(200)
     async getCategoryById(@Param('id') id: string): Promise<Category> {
-        return await this.categoryService.getCategoryById(id)
+        const category = await this.categoryService.getCategoryById(id)
+        if (!category) {
+            throw new HttpException('No category By That Id', HttpStatus.BAD_REQUEST)
+        }
+        return category
     }
 
     @Get('get-categoryByName_en/:name_en')

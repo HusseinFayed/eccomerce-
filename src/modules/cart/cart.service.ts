@@ -28,7 +28,7 @@ export class CartService extends ServiceFactory<Cart>(Cart) {
             return "Out Of Stock"
         }
         const newCart = await this.connection.model<Cart>('Cart').create({
-            user_name: await req.user.name,
+            user_name: req.user.name,
             qty: cart.qty,
             productId: cart.productId,
             price: price,
@@ -50,4 +50,8 @@ export class CartService extends ServiceFactory<Cart>(Cart) {
         await this.connection.model<Cart>('Cart').updateOne({ _id: id }, { qty: cart.qty })
     }
 
+    // async getUserCart(req){
+
+    //     return await this.connection.model<Cart>('Cart').find({where: {username: req.user.name}})
+    // }
 }

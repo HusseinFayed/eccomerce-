@@ -24,6 +24,7 @@
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/mongoose": "^9.2.1",
@@ -53,7 +54,9 @@
     "sequelize": "^6.25.3",
     "sequelize-typescript": "^2.1.5",
     "swagger-ui-express": "^4.6.0",
-    "typeorm": "^0.3.9"
+    "typeorm": "^0.3.9",
+    "winston": "^3.8.2",
+    "winston-mongodb": "^5.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

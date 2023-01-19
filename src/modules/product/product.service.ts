@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model, Types } from 'mongoose';
 import { CategoryService } from '../category/category.service';
@@ -8,16 +8,17 @@ import { ProductDto } from '../../dtos/product.dto';
 import { Product, ProductDocument } from '../../models/product.model';
 
 @Injectable()
-export class ProductService extends ServiceFactory<Product>(Product) {
+export class ProductService extends ServiceFactory<Product>(Product)
+{
     constructor(
         private readonly categoryService: CategoryService,
-        @InjectConnection() private connection: Connection
+        @InjectConnection() private connection: Connection,
+        
     ) {
-        super(connection)
+        super(connection);
     }
     async createProduct(product: ProductDto, req) {
         const category = await this.connection.model<Category>('Category').findOne({ name_en: product.categoryId })
-        console.log(category)
         if (!category) {
             throw new HttpException('No Category By That Name', HttpStatus.BAD_REQUEST);
         }
@@ -34,6 +35,7 @@ export class ProductService extends ServiceFactory<Product>(Product) {
 
     async getProductById(id: string): Promise<Product> {
         return await this.connection.model<Product>('Product').findById(id)
+
     }
 
     async getProductByName_en(name_en: string): Promise<Product> {
