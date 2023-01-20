@@ -28,7 +28,7 @@ E-commerce (electronic commerce) is the buying and selling of products according
 
 
 ## Project has two kinds of users
-1) Serller: Can add, edit, remove product and category
+1) Seller: Can add, edit, remove product and category
 2) Buyer: Can can get all products with its categories to get paid
 
 ## Project Feature 
