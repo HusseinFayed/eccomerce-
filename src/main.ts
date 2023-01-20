@@ -31,7 +31,7 @@ async function bootstrap() {
 
   await app.listen(port, () => {
     Logger.log(`eccommerce server started at ${port}`, 'server');
-    Logger.log(`DB connected`, 'DataBase')
+    Logger.log(`DataBase connected`, 'DataBase')
     Logger.log(`http://localhost:${port}/api`, "swagger")
   });
 }

@@ -14,7 +14,7 @@ import { UserModule } from './modules/users/user.module';
 
 @Module({
   imports: [
-    // MongooseModule.forRoot('mongodb://127.0.0.1:27017/eccomerce'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/eccomerce'),
     ConfigModule.forRoot({
       isGlobal:true
     }),
@@ -27,8 +27,3 @@ import { UserModule } from './modules/users/user.module';
 })
 export class AppModule { }
 
-// MongooseModule.forRootAsync({
-//   useFactory: () => ({
-//     uri: 'mongodb://127.0.0.1:27017/eccomerce',
-//   }),
-// }),

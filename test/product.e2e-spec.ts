@@ -7,6 +7,7 @@ import { cart, category, product, user } from './data/product.testData';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from '../src/models/product.model';
 import { JwtService } from '@nestjs/jwt';
+import { DatabaseService } from '../src/database/databse.service';
 let dbConnection: Connection;
 let httpServer: any;
 // let token;
@@ -20,6 +21,8 @@ describe('ProductController E2E Test', () => {
       imports: [AppModule],
     }).compile();
 
+    // dbConnection = moduleFixture.get<DatabaseService>(DatabaseService).getDbHandle();
+    
     app = moduleFixture.createNestApplication();
     httpServer = app.getHttpServer()
     await app.init();

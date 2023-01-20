@@ -25,5 +25,5 @@ export const cart = {
 // }
 
 export const user = {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic2VsbGVyMiIsImlhdCI6MTY3MzY5MDU5MSwiZXhwIjoxNzA1MjQ4MTkxfQ.k4Ajlglx0xkEvZSQvo-ZKUUi1nlqNeJ2Rg0yIhZjFs8"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic2VybGxlcjMiLCJpYXQiOjE2NzQxNDgyMzYsImV4cCI6MTcwNTcwNTgzNn0.a0RvDHT2XSZGwd0UNIPCB-FeOa4XIiIkyrhXymcYcv0"
 }
