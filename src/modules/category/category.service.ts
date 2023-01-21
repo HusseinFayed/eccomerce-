@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { ServiceFactory } from '../generic/abstract.service';
@@ -8,8 +8,9 @@ import { Category, CategoryDocument } from '../../models/category.model';
 
 @Injectable()
 export class CategoryService extends ServiceFactory<Category>(Category) {
+    private readonly logger = new Logger(CategoryService.name)
     constructor(
-        @InjectConnection() private connection: Connection
+        @InjectConnection() private connection: Connection,
     ) {
         super(connection)
     }
@@ -20,11 +21,19 @@ export class CategoryService extends ServiceFactory<Category>(Category) {
     }
 
     async getCategoryById(id: string): Promise<Category> {
-        return await this.connection.model<Category>('Category').findById(id)
+        const category = await this.connection.model<Category>('Category').findById(id)
+        if(!category) {
+            this.logger.warn('Tried to access a cayegory that does not exist');
+        }
+        return category
     }
 
     async getCategoryByName_en(name_en: string): Promise<Category> {
-        return await this.connection.model<Category>('Category').findOne({ name_en: name_en })
+        const category = await this.connection.model<Category>('Category').findOne({ name_en: name_en })
+        if(!category) {
+            this.logger.warn('Tried to access a cayegory that does not exist');
+        }
+        return category
     }
 
     async deleteCategory(name_en: string): Promise<void> {

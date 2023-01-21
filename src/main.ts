@@ -26,9 +26,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   /////////// Swagger End//////////////
 
+
+
+  /////////// Logging//////////////
   const port = process.env.PORT || 5000
-
-
   await app.listen(port, () => {
     Logger.log(`eccommerce server started at ${port}`, 'server');
     Logger.log(`DataBase connected`, 'DataBase')

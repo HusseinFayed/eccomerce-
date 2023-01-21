@@ -34,7 +34,11 @@ export class ProductController extends ControllerFactory<Product>(Product) {
     @Get('get-productById/:id')
     @HttpCode(200)
     async getProductById(@Param('id') id: string): Promise<Product> {
-        return await this.productService.getProductById(id)
+        const product = await this.productService.getProductById(id)
+        if (!product) {
+            throw new HttpException('No product By That name', HttpStatus.BAD_REQUEST)
+        }
+        return product
     }
 
     @Get('get-productByName_en/:name_en')
