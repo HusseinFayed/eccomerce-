@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule, MongooseModuleAsyncOptions } from '@nestjs/mongoose';
 import { DatabaseService } from './databse.service';
 
@@ -10,9 +10,11 @@ if (process.env.NODE_ENV == 'test') {
 @Module({
     imports: [
         MongooseModule.forRootAsync({
+            imports: [ConfigModule],
+            // inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
-
-                uri: configService.get<string>('NODE_ENV') === 'test'
+                // logger: new DatabaseLogger(),
+                uri: configService.get<string>('LOGS_DB') 
                     ? configService.get<string>('DB_TEST_URL')
                     : configService.get<string>('DB_URL'),
                 useUnifiedTopology: true

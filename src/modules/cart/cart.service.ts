@@ -15,9 +15,10 @@ export class CartService extends ServiceFactory<Cart>(Cart) {
     }
     async createCart(cart: CartDto, req) {
 
-        const product_check = await this.connection.model<Product>('Product').findOne({ _id: new Types.ObjectId(cart.productId) })
+        // const product_check = await this.connection.model<Product>('Product').findOne({ _id: new Types.ObjectId(cart.productId) })
+        const product_check = await this.connection.model<Product>('Product').findOne({ name_en: cart.name_en })
         if (!product_check) {
-            throw new HttpException('No Product By That ID', HttpStatus.BAD_REQUEST);
+            throw new HttpException('No Product By That Name', HttpStatus.BAD_REQUEST);
         }
 
         const price = product_check.price
@@ -30,7 +31,7 @@ export class CartService extends ServiceFactory<Cart>(Cart) {
         const newCart = await this.connection.model<Cart>('Cart').create({
             user_name: req.user.name,
             qty: cart.qty,
-            productId: cart.productId,
+            name_en: cart.name_en,
             price: price,
             total_price: price * cart.qty,
             product: product_check
@@ -54,4 +55,4 @@ export class CartService extends ServiceFactory<Cart>(Cart) {
 
     //     return await this.connection.model<Cart>('Cart').find({where: {username: req.user.name}})
     // }
-}
+}       

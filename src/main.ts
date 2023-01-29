@@ -19,7 +19,7 @@ async function bootstrap() {
   /////////// Swagger Start//////////////
   const config = new DocumentBuilder()
     .setTitle('Ecommerce EndPoint')
-    .setDescription('A Demo Ecommerce EndPoint')
+    .setDescription('Ecommerce EndPoint')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
@@ -29,6 +29,7 @@ async function bootstrap() {
 
 
   /////////// Logging//////////////
+
   const port = process.env.PORT || 5000
   await app.listen(port, () => {
     Logger.log(`eccommerce server started at ${port}`, 'server');

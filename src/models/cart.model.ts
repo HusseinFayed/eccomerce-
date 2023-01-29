@@ -20,11 +20,11 @@ export class Cart extends OBaseEntity {
     @Prop()
     total_price: number;
 
+    @Prop()
+    name_en: string;
+
     @Prop({ type: mongoose.Schema.Types.Array, ref: Cart.name })
     product: Product
-
-    // @ManyToOne(()=> User, (user)=> user.carts)
-    // user: User
 
 }
 

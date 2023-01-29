@@ -8,7 +8,6 @@ import { Category, CategoryDocument } from '../../models/category.model';
 
 @Injectable()
 export class CategoryService extends ServiceFactory<Category>(Category) {
-    private readonly logger = new Logger(CategoryService.name)
     constructor(
         @InjectConnection() private connection: Connection,
     ) {
@@ -23,16 +22,14 @@ export class CategoryService extends ServiceFactory<Category>(Category) {
     async getCategoryById(id: string): Promise<Category> {
         const category = await this.connection.model<Category>('Category').findById(id)
         if(!category) {
-            this.logger.warn('Tried to access a cayegory that does not exist');
-        }
+            throw new HttpException('No Category By That Name', HttpStatus.BAD_REQUEST);        }
         return category
     }
 
     async getCategoryByName_en(name_en: string): Promise<Category> {
         const category = await this.connection.model<Category>('Category').findOne({ name_en: name_en })
         if(!category) {
-            this.logger.warn('Tried to access a cayegory that does not exist');
-        }
+            throw new HttpException('No Category By That Name', HttpStatus.BAD_REQUEST);        }
         return category
     }
 
