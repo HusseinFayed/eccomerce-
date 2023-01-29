@@ -36,9 +36,10 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 .select('stock').exec()
             console.log('Stock =', stock[0].stock);
 
-            const qty = await this.connection.model<Cart>('Cart')
+            var qty = await this.connection.model<Cart>('Cart')
                 .find({ user_name: user_name, name_en: product[0].name_en })
                 .select('qty').exec()
+                qty = JSON.parse(JSON.stringify(qty))
             console.log('Quantity =', qty[0].qty);
 
             const updated_stock = Number(stock[0].stock) - Number(qty[0].qty)
@@ -49,7 +50,13 @@ export class OrderService extends ServiceFactory<Order>(Order) {
             // await this.connection.model<Product>('Product')
             // .updateOne({name_en:product[0].name_en}, {stock: updated_stock})
 
-
+            const price = await this.connection.model<Cart>('Cart')
+            .find({user_name:user_name, name_en: product[0].name_en}).select('price').exec()
+            console.log('Price =', price[0].price);
+            
+            const total_price = price[0].price * qty[0].qty
+            console.log('Total Price =',total_price);
+            
 
 
         });

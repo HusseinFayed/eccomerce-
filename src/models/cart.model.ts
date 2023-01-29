@@ -12,7 +12,7 @@ export class Cart extends OBaseEntity {
     user_name: string;
 
     @Prop()
-    qty: string;
+    qty: number;
 
     @Prop()
     price: number;
