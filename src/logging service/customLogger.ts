@@ -1,6 +1,7 @@
 import { Injectable, ConsoleLogger } from '@nestjs/common';
 import { ConsoleLoggerOptions } from '@nestjs/common/services/console-logger.service';
 import { ConfigService } from '@nestjs/config';
+import { LogSchema } from 'src/models/log.model';
 import getLogLevels from './getLogLevels';
 import LogsService from './logging.service';
 
@@ -71,7 +72,10 @@ class CustomLogger extends ConsoleLogger {
       context,
       level: 'error'
     })
+    console.log(message)
+    return  this.logsService.createLog(message)
   }
+  
 }
  
 export default CustomLogger;

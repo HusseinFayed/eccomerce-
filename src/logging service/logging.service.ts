@@ -1,26 +1,26 @@
 
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { clearConfigCache } from 'prettier';
+import { InjectConnection } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 import { Log } from 'src/models/log.model';
-import { Repository } from 'typeorm';
+import { ServiceFactory } from 'src/modules/generic/abstract.service';
+
 
  
 @Injectable()
-export default class LogsService {
+export default class LogsService extends ServiceFactory<Log>(Log){
   constructor(
-    @InjectRepository(Log)
-    private logsRepository: Repository<Log>
-  ) {}
+    @InjectConnection() private connection: Connection,
+
+  ) {
+    super(connection)
+  }
  
   async createLog(message) {
-    const newLog = await this.logsRepository.create(message);
-    console.log(newLog)
-    await this.logsRepository.save(newLog, {
-      data: {
-        isCreatingLogs: true
-      }
-    });
+    console.log(message)
+
+    const newLog = await this.connection.model<Log>('Log').create(message);
+    // await this.connection.model<Log>('Log').create(newLog);
     return newLog;
   }
 }

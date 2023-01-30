@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/databse.module';
+import { LoggingModule } from './logging service/logging.module';
 import LogsMiddleware from './logging service/logs.middleware';
 
 import { AuthModule } from './modules/auth/auth.module';
@@ -24,7 +25,7 @@ import { UserModule } from './modules/users/user.module';
     }),
     DatabaseModule,
     UserModule,
-    AuthModule, ProductModule, CartModule, CategoryModule,OrderModule
+    AuthModule, ProductModule, CartModule, CategoryModule,OrderModule,LoggingModule
   
   ],
   controllers: [AppController],
