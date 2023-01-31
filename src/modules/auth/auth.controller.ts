@@ -5,8 +5,11 @@ import { MailerService } from '@nestjs-modules/mailer'
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDocument } from 'src/models/users.model';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Auth')
+
 export class AuthController {
     constructor(private authService: AuthService,
         private mailerService: MailerService,

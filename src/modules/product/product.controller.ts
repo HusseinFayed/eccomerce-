@@ -10,8 +10,11 @@ import { ControllerFactory } from '../generic/abstract.controller';
 import { ProductDto } from '../../dtos/product.dto';
 import { Product } from '../../models/product.model';
 import { ProductService } from './product.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Product')
+
 export class ProductController extends ControllerFactory<Product>(Product) {
     constructor(private productService: ProductService,
         private userService: UsersService

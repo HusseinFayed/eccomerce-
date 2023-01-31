@@ -7,6 +7,8 @@ import { Order } from 'src/models/order.model';
 import { Cart } from 'src/models/cart.model';
 import { Product } from 'src/models/product.model';
 import { Recipe } from 'src/models/recipe.model';
+import { User } from 'src/models/users.model';
+import { IsNumber } from 'class-validator';
 
 
 @Injectable()
@@ -27,6 +29,7 @@ export class OrderService extends ServiceFactory<Order>(Order) {
         const newRecipe = await this.connection.model<Recipe>('Recipe').create({
             user_name: user_name,
             order_number: order_number,
+            status: 'PENDING',
         })
 
         const user_product = await this.connection.model<Cart>('Cart')
@@ -54,8 +57,8 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 return "Out Of Stock"
             console.log('Updated Stock =', updated_stock);
 
-            await this.connection.model<Product>('Product')
-            .updateOne({name_en:product[0].name_en}, {stock: updated_stock})
+            // await this.connection.model<Product>('Product')
+            //     .updateOne({ name_en: product[0].name_en }, { stock: updated_stock })
 
             const price = await this.connection.model<Cart>('Cart')
                 .find({ user_name: user_name, name_en: product[0].name_en }).select('price').exec()
@@ -73,19 +76,61 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 order_number: order_number
             })
 
-            await this.connection.model<Cart>('Cart').deleteOne({user_name:user_name})
+            // await this.connection.model<Cart>('Cart').deleteOne({ user_name: user_name })
 
-            var recipe_number = await this.connection.model<Recipe>('Recipe').findOne({order_number: order_number}).select('_id').exec();
-            recipe_number=JSON.parse(JSON.stringify(recipe_number))._id
-            console.log('Recipe Number =',recipe_number);
-            await this.connection.model<Order>('Order').updateMany({ order_number: order_number } , { recipe_number: recipe_number })
+            var recipe_number = await this.connection.model<Recipe>('Recipe')
+                .findOne({ order_number: order_number })
+                .select('_id').exec();
+            recipe_number = JSON.parse(JSON.stringify(recipe_number))._id
+            console.log('Recipe Number =', recipe_number);
+            await this.connection.model<Order>('Order')
+                .updateMany({ order_number: order_number }, { recipe_number: recipe_number })
 
         });
 
+
     }
+    async confirmOrder(req) {
+        const user_name = req.user.name
+        console.log("User: ", user_name)
+
+        const order_number = await this.connection.model<Order>('Order')
+            .findOne({ user_name: user_name })
+            .select('order_number').exec();
+        console.log("Order Number :", order_number)
+
+        var userOldDeposit = await this.connection.model<User>('User')
+            .find({ username: user_name })
+            .select('deposit').exec()
+
+        userOldDeposit = JSON.parse(JSON.stringify(userOldDeposit))
+        console.log("User Old Deposit =", userOldDeposit[0].deposit);
+
+        var total_recipe = await this.connection.model<Order>('Order')
+            .aggregate([
+                { $match: { user_name: user_name } },
+                { $group: { _id: null, TotalSum: { $sum: '$total_price' } } },
+
+            ])
+        console.log("Total Recipe", total_recipe[0].TotalSum);
+
+        if (userOldDeposit[0].deposit < total_recipe[0].TotalSum) {
+            throw new HttpException('You Dont have enough CREDIT', HttpStatus.BAD_REQUEST)
+        }
+
+        const updatedBuyerDeposit = userOldDeposit[0].deposit - total_recipe[0].TotalSum
+        console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
+
+        await this.connection.model<User>('User')
+            .updateOne({ username: user_name }, { deposit: updatedBuyerDeposit })
 
 
+        // const oldSellerDeposit = 
 
+        // const newSellerDeposit = 
+
+
+    }
 
 }
 
@@ -95,3 +140,14 @@ export class OrderService extends ServiceFactory<Order>(Order) {
 
         // const productName = user_product[0].product[0].name_en
         // console.log("Product name", productName)
+
+         // if (userOldDeposit[0].deposit < total_price) {
+        //     throw new HttpException('You Dont have enough credit', HttpStatus.BAD_REQUEST)
+        // }
+
+
+         //TODO find seller old deposit and sum old deposit and total price and save in seller new deposit
+
+            // const oldSellerDeposit = await this.connection.model<User>('User')
+            // .find({ username:  })
+            // .select('deposit').exec()

@@ -11,8 +11,11 @@ import { UsersService } from "../users/users.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Order } from "src/models/order.model";
 import { OrderService } from "./order.service";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller()
+@ApiTags('Order')
+
 export class OrderController extends ControllerFactory<Order>(Order) {
     constructor(private OrderService: OrderService,
         private userService: UsersService
@@ -26,6 +29,14 @@ export class OrderController extends ControllerFactory<Order>(Order) {
     @UsePipes(ValidationPipe)
     async makeOrder(@Req() req) {
         return await this.OrderService.makeOrder(req);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('confirm-Order')
+    @HttpCode(200)
+    @UsePipes(ValidationPipe)
+    async confirmOrder(@Req() req) {
+        return await this.OrderService.confirmOrder(req);
     }
 
 }

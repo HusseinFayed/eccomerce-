@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Recipe, RecipeSchema } from 'src/models/recipe.model';
+import { User, UserSchema } from 'src/models/users.model';
 import { Category, CategorySchema } from '../../models/category.model';
 import { Product, ProductSchema } from '../../models/product.model';
 
@@ -15,6 +16,7 @@ import { OrderService } from './order.service';
       { name: Product.name, schema: ProductSchema },
       { name: Category.name, schema: CategorySchema },
       { name: Recipe.name, schema: RecipeSchema },
+      { name: User.name, schema: UserSchema },
     ])
   ],
 

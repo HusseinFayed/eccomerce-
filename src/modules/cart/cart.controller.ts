@@ -9,8 +9,11 @@ import { CartDto } from '../../dtos/cart.dto';
 import { Cart } from '../../models/cart.model';
 import { CartService } from './cart.service';
 import { Order } from '../../models/order.model';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Cart')
+
 
 export class CartController extends ControllerFactory<Cart>(Cart) {
     constructor(private cartService: CartService,

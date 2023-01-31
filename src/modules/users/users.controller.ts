@@ -4,8 +4,11 @@ import { User } from '../../models/users.model';
 import { DepositDto } from '../../dtos/deposit.dto';
 import { UserDto } from '../../dtos/user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('Users')
+
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 

@@ -16,6 +16,9 @@ export class Recipe {
     return_number: number;
 
     @Prop()
+    status: string;
+
+    @Prop()
     created_at: Date;
 
     @Prop()

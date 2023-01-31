@@ -10,8 +10,11 @@ import { Category } from "../../models/category.model";
 import { CategoryService } from "./category.service";
 import { UsersService } from "../users/users.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller()
+@ApiTags('Category')
+
 export class CategoryController extends ControllerFactory<Category>(Category) {
     constructor(private categoryService: CategoryService,
         private userService: UsersService
