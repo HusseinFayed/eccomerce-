@@ -46,6 +46,11 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 .select('stock').exec()
             console.log('Stock =', stock[0].stock);
 
+            const sellerName = await this.connection.model<Product>('Product')
+                .find({ name_en: product[0].name_en })
+                .select('user').exec()
+            console.log('Seller Name:', sellerName[0].user[0]);
+
             var qty = await this.connection.model<Cart>('Cart')
                 .find({ user_name: user_name, name_en: product[0].name_en })
                 .select('qty').exec()
@@ -73,7 +78,8 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 qty: qty[0].qty,
                 price: price[0].price,
                 total_price: total_price,
-                order_number: order_number
+                order_number: order_number,
+                sellerName: sellerName[0].user[0],
             })
 
             // await this.connection.model<Cart>('Cart').deleteOne({ user_name: user_name })
@@ -85,17 +91,16 @@ export class OrderService extends ServiceFactory<Order>(Order) {
             console.log('Recipe Number =', recipe_number);
             await this.connection.model<Order>('Order')
                 .updateMany({ order_number: order_number }, { recipe_number: recipe_number })
-
         });
-
-
     }
+
+
     async confirmOrder(req) {
         const user_name = req.user.name
         console.log("User: ", user_name)
 
         const order_number = await this.connection.model<Order>('Order')
-            .findOne({ user_name: user_name })
+            .find({ user_name: user_name })
             .select('order_number').exec();
         console.log("Order Number :", order_number)
 
@@ -121,11 +126,42 @@ export class OrderService extends ServiceFactory<Order>(Order) {
         const updatedBuyerDeposit = userOldDeposit[0].deposit - total_recipe[0].TotalSum
         console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
 
-        await this.connection.model<User>('User')
-            .updateOne({ username: user_name }, { deposit: updatedBuyerDeposit })
+        // await this.connection.model<User>('User')
+        //     .updateOne({ username: user_name }, { deposit: updatedBuyerDeposit })
 
 
-        // const oldSellerDeposit = 
+        const sellerProduct = await this.connection.model<Order>('Order')
+            .find({ order_number: order_number[0].order_number })
+            .select('product').exec();
+        console.log('Product', sellerProduct);
+
+
+        sellerProduct.forEach(async (y) => {
+            const product = y.product
+            console.log('Product', product);
+
+            const user = product[0].user
+            console.log('User:', user[0]);
+
+            const oldSellerDeposit = await this.connection.model<User>('User')
+                .find({ username: user })
+                .select('deposit').exec();
+            console.log('Old Seller Deposit', oldSellerDeposit[0].deposit);
+
+            const total_price = await this.connection.model<Order>('Order')
+                .find({ sellerName: user[0] })
+                .select('total_price').exec()
+            console.log('Total price', total_price);
+
+
+            // const newSellerDeposit = +oldSellerDeposit[0].deposit + total_price
+
+        })
+
+
+
+
+
 
         // const newSellerDeposit = 
 

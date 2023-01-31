@@ -32,6 +32,9 @@ export class Order extends OBaseEntity{
     @Prop()
     recipe_number: string;
 
+    @Prop()
+    sellerName: string;
+
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
