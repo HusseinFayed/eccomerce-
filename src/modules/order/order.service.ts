@@ -2,13 +2,11 @@ import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { ServiceFactory } from '../generic/abstract.service';
-
 import { Order } from 'src/models/order.model';
 import { Cart } from 'src/models/cart.model';
 import { Product } from 'src/models/product.model';
 import { Recipe } from 'src/models/recipe.model';
 import { User } from 'src/models/users.model';
-import { IsNumber } from 'class-validator';
 
 
 @Injectable()
@@ -62,8 +60,8 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 return "Out Of Stock"
             console.log('Updated Stock =', updated_stock);
 
-            // await this.connection.model<Product>('Product')
-            //     .updateOne({ name_en: product[0].name_en }, { stock: updated_stock })
+            await this.connection.model<Product>('Product')
+                .updateOne({ name_en: product[0].name_en }, { stock: updated_stock })
 
             const price = await this.connection.model<Cart>('Cart')
                 .find({ user_name: user_name, name_en: product[0].name_en }).select('price').exec()
@@ -82,7 +80,7 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 sellerName: sellerName[0].user[0],
             })
 
-            // await this.connection.model<Cart>('Cart').deleteOne({ user_name: user_name })
+            await this.connection.model<Cart>('Cart').deleteOne({ user_name: user_name })
 
             var recipe_number = await this.connection.model<Recipe>('Recipe')
                 .findOne({ order_number: order_number })
@@ -126,9 +124,8 @@ export class OrderService extends ServiceFactory<Order>(Order) {
         const updatedBuyerDeposit = userOldDeposit[0].deposit - total_recipe[0].TotalSum
         console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
 
-        // await this.connection.model<User>('User')
-        //     .updateOne({ username: user_name }, { deposit: updatedBuyerDeposit })
-
+        await this.connection.model<User>('User')
+            .updateOne({ username: user_name }, { deposit: updatedBuyerDeposit })
 
         const sellerProduct = await this.connection.model<Order>('Order')
             .find({ order_number: order_number[0].order_number })
@@ -151,10 +148,18 @@ export class OrderService extends ServiceFactory<Order>(Order) {
             const total_price = await this.connection.model<Order>('Order')
                 .find({ sellerName: user[0] })
                 .select('total_price').exec()
-            console.log('Total price', total_price);
+            console.log('Total price', total_price[0].total_price);
 
+            const newSellerDeposit = +oldSellerDeposit[0].deposit + +total_price[0].total_price
+            console.log('New Seller Deposit =', newSellerDeposit);
 
-            // const newSellerDeposit = +oldSellerDeposit[0].deposit + total_price
+            await this.connection.model<User>('User')
+                .updateOne({ username: user }, { deposit: newSellerDeposit })
+
+            await this.connection.model<Recipe>('Recipe')
+                .updateOne({ user_name: user_name }
+                    , { status: 'PAID' })
+
 
         })
 
