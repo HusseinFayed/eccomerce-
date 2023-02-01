@@ -36,12 +36,13 @@ E-commerce (electronic commerce) is the buying and selling of products according
 2) Seller can add new products and categories and edit or remove their products
 3) Buyer can put products in cart and view their carts before order and edit cart if it is required
 4) Buyer can add to his deposit to be able to make order
+6) Make Order: Make order by buyer cart and subtracting carts quantity from product stock quantity
+7) Make a transaction from buyer deposit to seller deposit 
+
 
 ## Feature To Be Added
-1) Make Order: Make order by buyer cart and subtracting carts quantity from product stock quantity
-2) Make a transaction from buyer deposit to seller deposit 
-3) Print Recipe by buyer order
-4) Seller can get all his orders
+1) Print Recipe by buyer order
+2) Seller can get all his orders
 
 ## Installation
 
