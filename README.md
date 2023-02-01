@@ -43,6 +43,7 @@ E-commerce (electronic commerce) is the buying and selling of products according
 ## Feature To Be Added
 1) Print Recipe by buyer order
 2) Seller can get all his orders
+3) User password reset & change 
 
 ## Installation
 
