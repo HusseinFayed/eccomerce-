@@ -112,8 +112,7 @@ export class OrderService extends ServiceFactory<Order>(Order) {
         var total_recipe = await this.connection.model<Order>('Order')
             .aggregate([
                 { $match: { user_name: user_name } },
-                { $group: { _id: null, TotalSum: { $sum: '$total_price' } } },
-
+                { $group: { _id: null, TotalSum: { $sum: '$total_price' } } }
             ])
         console.log("Total Recipe", total_recipe[0].TotalSum);
 
@@ -145,6 +144,13 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 .select('deposit').exec();
             console.log('Old Seller Deposit', oldSellerDeposit[0].deposit);
 
+            // var total_recipe = await this.connection.model<Order>('Order')
+            //     .aggregate([
+            //         { $match: { sellerName: user[0] } && {order_number: order_number[0].order_number} },
+            //         { $group: { _id: null, TotalRecipe: { $sum: '$total_price' } } }
+            //     ])
+            // console.log(total_recipe);
+
             const total_price = await this.connection.model<Order>('Order')
                 .find({ sellerName: user[0] })
                 .select('total_price').exec()
@@ -153,42 +159,12 @@ export class OrderService extends ServiceFactory<Order>(Order) {
             const newSellerDeposit = +oldSellerDeposit[0].deposit + +total_price[0].total_price
             console.log('New Seller Deposit =', newSellerDeposit);
 
-            await this.connection.model<User>('User')
-                .updateOne({ username: user }, { deposit: newSellerDeposit })
 
-            await this.connection.model<Recipe>('Recipe')
-                .updateOne({ user_name: user_name }
-                    , { status: 'PAID' })
+            await this.connection.model<User>('User').updateOne({ username: user }, { deposit: newSellerDeposit })
+
+            await this.connection.model<Recipe>('Recipe').updateOne({ user_name: user_name }, { status: 'PAID' })
 
 
         })
-
-
-
-
-
-
-        // const newSellerDeposit = 
-
-
     }
-
 }
-
-
-
-
-
-        // const productName = user_product[0].product[0].name_en
-        // console.log("Product name", productName)
-
-         // if (userOldDeposit[0].deposit < total_price) {
-        //     throw new HttpException('You Dont have enough credit', HttpStatus.BAD_REQUEST)
-        // }
-
-
-         //TODO find seller old deposit and sum old deposit and total price and save in seller new deposit
-
-            // const oldSellerDeposit = await this.connection.model<User>('User')
-            // .find({ username:  })
-            // .select('deposit').exec()

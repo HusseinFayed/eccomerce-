@@ -17,7 +17,7 @@ import { ApiTags } from "@nestjs/swagger";
 @ApiTags('Order')
 
 export class OrderController extends ControllerFactory<Order>(Order) {
-    constructor(private OrderService: OrderService,
+    constructor(private orderService: OrderService,
         private userService: UsersService
     ) {
         super(OrderService);
@@ -28,7 +28,7 @@ export class OrderController extends ControllerFactory<Order>(Order) {
     @HttpCode(200)
     @UsePipes(ValidationPipe)
     async makeOrder(@Req() req) {
-        return await this.OrderService.makeOrder(req);
+        return await this.orderService.makeOrder(req);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -36,7 +36,7 @@ export class OrderController extends ControllerFactory<Order>(Order) {
     @HttpCode(200)
     @UsePipes(ValidationPipe)
     async confirmOrder(@Req() req) {
-        return await this.OrderService.confirmOrder(req);
+        return await this.orderService.confirmOrder(req);
     }
 
 }
