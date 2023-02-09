@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <center>
+<center>
+
     <head>
-<strong><h1> Recipe </h1></strong>
-    </center>
+        <strong>
+            <h1> Recipe </h1>
+        </strong>
+</center>
 </head>
-    <head>
-        <title>Print Recipe</title>
-        <meta charset="windows-1252">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
+
+<head>
+    <title>Print Recipe</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
     <center>
         <table id="table" border="10">
             <tr>
-                <th>Product ID</th>
+                <th>Product</th>
                 <th>Quantity</th>
                 <th>Product Price</th>
                 <th>Total Price</th>
             </tr>
             {{#each orders}}
             <tr>
-                <th>{{product_id}}</th>
+                <th>{{product}}</th>
                 <th>{{qty}}</th>
                 <th>{{price}}</th>
                 <th>{{total_price}}</th>
             </tr>
             {{/each}}
         </table>
-        </center>
-        <span id="val"</span>
-          <script>
+    </center>
+    <span id="val" </span>
+        <script>
             var table = document.getElementById("table"), sumVal = 0;
-            for(var i = 1; i < table.rows.length; i++)
-            {
+            for (var i = 1; i < table.rows.length; i++) {
                 sumVal = sumVal + parseInt(table.rows[i].cells[3].innerHTML);
             }
             document.getElementById("val").innerHTML = "Total Recipe Value = " + sumVal;
             console.log(sumVal);
-            </script>
-            <span id="val1"</span>
+        </script>
+        <span id="val1" </span>
             <script>
-            const x = 1.14 * sumVal;
-            document.getElementById("val1").innerHTML = "Total Price After 14% VAT = " + x;
-            console.log(x);
-            </script>   
+                const x = 1.14 * sumVal;
+                document.getElementById("val1").innerHTML = "Total Price After 14% VAT = " + x;
+                console.log(x);
+            </script>
+
 </html>

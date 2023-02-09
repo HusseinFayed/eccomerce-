@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model } from 'mongoose';
+import { Connection, Model, Types } from 'mongoose';
 import { ServiceFactory } from '../generic/abstract.service';
 import { Order } from 'src/models/order.model';
 import { Cart } from 'src/models/cart.model';
@@ -15,6 +15,9 @@ export class OrderService extends ServiceFactory<Order>(Order) {
         @InjectConnection() private connection: Connection,
     ) {
         super(connection)
+    }
+    async getRecipeById(id: string): Promise<Recipe> {
+        return await this.connection.model<Recipe>('Recipe').findOne({ _id: new Types.ObjectId(id) });
     }
 
     async makeOrder(req) {
@@ -144,13 +147,6 @@ export class OrderService extends ServiceFactory<Order>(Order) {
                 .select('deposit').exec();
             console.log('Old Seller Deposit', oldSellerDeposit[0].deposit);
 
-            // var total_recipe = await this.connection.model<Order>('Order')
-            //     .aggregate([
-            //         { $match: { sellerName: user[0] } && {order_number: order_number[0].order_number} },
-            //         { $group: { _id: null, TotalRecipe: { $sum: '$total_price' } } }
-            //     ])
-            // console.log(total_recipe);
-
             const total_price = await this.connection.model<Order>('Order')
                 .find({ sellerName: user[0] })
                 .select('total_price').exec()
@@ -159,12 +155,24 @@ export class OrderService extends ServiceFactory<Order>(Order) {
             const newSellerDeposit = +oldSellerDeposit[0].deposit + +total_price[0].total_price
             console.log('New Seller Deposit =', newSellerDeposit);
 
-
             await this.connection.model<User>('User').updateOne({ username: user }, { deposit: newSellerDeposit })
 
             await this.connection.model<Recipe>('Recipe').updateOne({ user_name: user_name }, { status: 'PAID' })
 
 
         })
+    }
+
+    async printRecipe(id): Promise<Order[]> {
+        var user_name = await this.connection.model<Recipe>('Recipe')
+            .find({ _id: id }).select('user_name').exec()
+        console.log('User Name:', user_name);
+
+        const order_number = await this.connection.model<Recipe>('Recipe')
+            .find({ _id: id }).select('order_number').exec()
+        console.log("Order Number :", order_number)
+
+        const orders = await this.connection.model<Order>('Order').find({ order_number: order_number[0].order_number })
+        return (orders)
     }
 }
