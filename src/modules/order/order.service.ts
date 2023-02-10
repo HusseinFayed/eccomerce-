@@ -175,4 +175,12 @@ export class OrderService extends ServiceFactory<Order>(Order) {
         const orders = await this.connection.model<Order>('Order').find({ order_number: order_number[0].order_number })
         return (orders)
     }
+
+    async findAllRecipes(): Promise<Recipe[]> {
+        return await this.connection.model<Recipe>('Recipe').find({})
+    }
+
+    async findAllOrders(): Promise<Order[]> {
+        return await this.connection.model<Order>('Order').find({})
+    }
 }

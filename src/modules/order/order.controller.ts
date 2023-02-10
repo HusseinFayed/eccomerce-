@@ -50,4 +50,16 @@ export class OrderController extends ControllerFactory<Order>(Order) {
             .then((result) => result ? { orders: result } : { orders: [] });
     }
 
+    @Get('get-recipes')
+    @Render('recipe-table')
+    findAllRecipes() {
+        return this.orderService.findAllRecipes().then((result) => result ? { recipes: result } : { recipes: [] });
+    }
+
+    @Get('get-orders')
+    @Render('order-table')
+    findAllOrders() {
+        return this.orderService.findAllOrders().then((result) => result ? { orders: result } : { orders: [] });
+    }
+
 }
