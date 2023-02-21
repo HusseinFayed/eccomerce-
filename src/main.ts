@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common'
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -35,6 +36,9 @@ async function bootstrap() {
     Logger.log(`eccommerce server started at ${port}`, 'server');
     Logger.log(`DataBase connected`, 'DataBase')
     Logger.log(`http://localhost:${port}/api`, "swagger")
+
+    
+    app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   });
 }
 bootstrap();

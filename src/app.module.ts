@@ -1,6 +1,8 @@
 import { Module, MiddlewareConsumer} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { WinstonModule } from 'nest-winston';
+import { transports } from 'winston';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/databse.module';
@@ -18,6 +20,12 @@ import { UserModule } from './modules/users/user.module';
 
 @Module({
   imports: [
+    WinstonModule.forRoot({
+      transports: [new transports.File({ filename: "error.log", level: "error" }),
+      new transports.File({ filename: "combined.log" }),
+      new transports.Console()]
+
+    }),
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/eccomerce'),
     // MongooseModule.forRoot('mongodb://127.0.0.1:27017/logs'),
     ConfigModule.forRoot({
