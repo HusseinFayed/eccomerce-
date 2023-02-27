@@ -62,4 +62,9 @@ export class OrderController extends ControllerFactory<Order>(Order) {
         return this.orderService.findAllOrders().then((result) => result ? { orders: result } : { orders: [] });
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('get-seller-orders')
+    async getSellerOrders(@Req() req) {
+        return await this.orderService.getSellerOrders(req)
+    }
 }

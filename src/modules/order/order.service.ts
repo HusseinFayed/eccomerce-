@@ -183,4 +183,19 @@ export class OrderService extends ServiceFactory<Order>(Order) {
     async findAllOrders(): Promise<Order[]> {
         return await this.connection.model<Order>('Order').find({})
     }
+
+    async getSellerOrders(req) {
+        const seller_name = req.user.name;
+        console.log('User: ', seller_name);
+        const orders = await this.connection.model<Order>('Order').find({ sellerName: seller_name }).exec();
+        console.log(orders);
+
+        const total_seller_income = await this.connection.model<Order>('Order')
+            .aggregate([
+                { $match: { sellerName: seller_name } },
+                { $group: { _id: null, TotalSum: { $sum: '$total_price' } } }
+            ])
+        console.log('Total Seller Income', total_seller_income.at(0)['TotalSum'])
+    }
+
 }

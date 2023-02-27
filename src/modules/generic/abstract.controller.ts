@@ -50,12 +50,12 @@ export function ControllerFactory<E>(
             return this.service.count();
         }
 
-        @Get(':id')
-        // @UseGuards(JwtAuthGuard)
-        @ApiResponse({ type: model })
-        async findById(@Param('id') id: string,): Promise<E> {
-            return this.service.findById(id);
-        }
+        // @Get(':id')
+        // // @UseGuards(JwtAuthGuard)
+        // @ApiResponse({ type: model })
+        // async findById(@Param('id') id: string,): Promise<E> {
+        //     return this.service.findById(id);
+        // }
 
         @Put(':id')
         // @UseGuards(JwtAuthGuard)
